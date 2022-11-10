@@ -20,9 +20,9 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized
 def detect(img_file):
     with torch.no_grad():
         # para
-        weights = 'last.pt'
+        weights = 'weights/last.pt'
         imgsz = 640
-        out = 'inference\output'
+        out = 'static\output'
         conf_thres = 0.25
         iou_thres = 0.45
         device = ''
@@ -30,6 +30,7 @@ def detect(img_file):
         save_conf = True
         save_img = True
 
+        vid_path, vid_writer = None, None
         # Init
         device = select_device()
         half = device.type != 'cpu'
@@ -94,8 +95,8 @@ def detect(img_file):
                             label = '%s %.2f' % (names[int(cls)], conf)
                             plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
 
-                # Print time (inference + NMS)
-                print('%sDone. (%.3fs)' % (s, t2 - t1))
+                # # Print time (inference + NMS)
+                # print('%sDone. (%.3fs)' % (s, t2 - t1))
 
                 # Save results (image with detections)
                 if save_img:
@@ -115,4 +116,4 @@ def detect(img_file):
                         vid_writer.write(im0)
     return save_path
 
-a = detect('inference/images/image_2.jpg')
+# a = detect('inference/images/image_2.jpg')
